@@ -1,0 +1,124 @@
+#!/usr/bin/bash
+
+function insert_into_table() {
+  while true; do
+
+      echo "===================================================="
+      echo "                   Available tables                 "
+      echo "===================================================="
+
+      found_tables=false
+
+      for table in *; do
+          if [ -f "$table" ]; then
+              echo "- $table"
+              found_tables=true
+          fi
+      done
+
+      if [ "$found_tables" = false ]; then
+          echo "No tables available to insert data into, Returning to Menu...⚠️"
+          sleep 1
+          break
+      fi
+
+      read -p "#-> Enter the table name to insert into (enter 'exit' to quit): " insert_table_name
+
+      if [ "$insert_table_name" == "exit" ]; then
+          echo "Exiting the script..."
+          sleep 1
+          break
+      fi
+
+      if [ ! -e "$insert_table_name" ]; then
+          echo "Table $insert_table_name does not exist. Please enter a valid table name ❌."
+          continue
+      fi
+
+      # Get column names, primary keys, and types from the file
+      IFS='|' read -r -a column_names < <(head -n 1 "$insert_table_name")
+      IFS='|' read -r -a column_keys < <(head -n 2 "$insert_table_name" | tail -n 1)
+      IFS='|' read -r -a column_types < <(head -n 3 "$insert_table_name" | tail -n 1)
+
+      # Find the index of the primary key column
+      primary_key_index=-1
+      for ((i=0; i<${#column_keys[@]}; i++)); do
+          if [ "${column_keys[i]}" == "yes" ]; then
+              primary_key_index=$i
+              break
+          fi
+      done
+
+      # Load existing primary key values into an array
+      primary_key_values=()
+      while read -r line; do
+          IFS='|' read -ra values <<< "$line"
+          primary_key_values+=("${values[$primary_key_index]}")
+      done < <(tail -n +4 "$insert_table_name")
+
+      # Prompt user for values
+      values=()
+      for ((i=0; i<${#column_names[@]}; i++)); do
+          while true; do
+              read -p "#-> Enter value for ${column_names[i]} (${column_types[i]}): " value
+
+              case "${column_types[i]}" in
+                  "int")
+                      if [[ "$value" =~ ^[0-9]+$ ]]; then
+                          break
+                      else
+                          echo "Invalid input. Please enter an integer ❌."
+                      fi
+                      ;;
+                  "str")
+                      if [[ "$value" =~ ^[a-zA-Z0-9_]+$ && ${#value} -ge 2 ]]; then
+                          break
+                      else
+                          if [ -z "$value" ]; then
+                              echo "Invalid input. Please enter a non-empty string ❌."
+                          elif [ ${#value} -lt 2 ]; then
+                              echo "Invalid input. Please enter a string with a minimum length of two characters ❌."
+                          else
+                              echo "Invalid input. Please enter a string without special characters ❌."
+                          fi
+                      fi
+                      ;;
+                  *)
+                      echo "Unknown column type: ${column_types[i]} ❌."
+
+                      ;;
+              esac
+          done
+
+
+          if [ $i -eq $primary_key_index ]; then
+              while true; do
+                  if [[ " ${primary_key_values[@]} " =~ " $value " ]] || { [ "${column_types[i]}" == "int" ] && ! [[ "$value" =~ ^[0-9]+$ ]]; } || { [ "${column_types[i]}" == "str" ] && ! [[ "$value" =~ ^[a-zA-Z_]+$ ]]; }; then
+                      if [[ " ${primary_key_values[@]} " =~ " $value " ]]; then
+                          echo "Error: Primary key value '$value' is already in use. Please enter a unique value ❌."
+                      elif [ "${column_types[i]}" == "int" ]; then
+                          echo "Invalid input. Please enter an integer for ${column_names[i]} ❌."
+                      elif [ "${column_types[i]}" == "str" ]; then
+                          echo "Invalid input. Please enter a string without special characters for ${column_names[i]} ❌."
+                      else
+                          echo "Unknown column type: ${column_types[i]} ❌"
+
+                      fi
+
+                      read -p "#-> Enter value for ${column_names[i]} (${column_types[i]}): " value
+                  else
+                      break
+                  fi
+              done
+          fi
+
+          values+=("$value|")
+      done
+
+      # Append values to the file
+      echo "${values[*]}" >> "$insert_table_name"
+
+      echo "Data inserted successfully into table $insert_table_name ✅."
+      break
+  done
+}
