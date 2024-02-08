@@ -98,9 +98,9 @@ create_table() {
             keys+="$column_is_primary_key"
 
             if [ $i -lt $num_columns ]; then
-                names+=":"
-                types+=":"
-                keys+=":"
+                names+="|"
+                types+="|"
+                keys+="|"
             fi
         done
 
