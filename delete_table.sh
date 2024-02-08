@@ -6,7 +6,7 @@ function delete_from_table() {
     if [ -z "$tables" ]; then
         echo "===================================================="
         echo "No tables available to drop. Returning to Menu...❌."
-        sleep 1.5
+        sleep 1
         exit
     else
         echo "#-> Select the number of the table you want to connect:"
@@ -31,7 +31,7 @@ function delete_from_table() {
                                     valid_row=false
 
                                     while [ "$valid_row" = false ]; do
-                                        read -p "Enter the row number to delete (max:$max_row_number): " row_number
+                                        read -p "#-> Enter the row number to delete (max:$max_row_number): " row_number
 
                                         if [[ $row_number =~ ^[1-9][0-9]*$ && $row_number -le $max_row_number ]]; then
                                             valid_row=true
@@ -111,7 +111,7 @@ function delete_from_table() {
                     no|n)
                         echo "===================================================="
                         echo "Returning to Main Menu..."
-                        sleep 1.5
+                        sleep 1
                         break
                         ;;
                     *)

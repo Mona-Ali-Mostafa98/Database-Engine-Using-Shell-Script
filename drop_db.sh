@@ -44,7 +44,7 @@ function drop_database() {
 #
 #source ./functions.sh
 #
-#read -p "Enter Database Name: " database_name
+#read -p "#-> Enter Database Name: " database_name
 #
 ## Check if the database directory exists
 #if [ -d "$database_name" ]; then

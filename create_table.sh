@@ -2,19 +2,6 @@
 source ./functions.sh
 
 create_table() {
-    #listing all files (excluding directories) in the current directory , -p dir/ file1  shortcut
-    files=$(ls -p | grep -v /)
-
-    #checks if the variable files is empty
-    if [ -z "$files" ]; then
-      echo "===================================================="
-      echo "DataBase Is  Empty, No Tables Exist ❌! "
-    else
-      echo "===================================================="
-      echo "Listing Tables Existing in DataBase ✅: "
-      echo "$files" | sed 's:/$::'
-    fi
-
     while true; do
         read -p "#-> Enter the table name (enter 'exit' to quit): " entered_name
 
@@ -29,13 +16,13 @@ create_table() {
 
     if [ "$table_name" == "exit" ]; then
         echo "Exiting the script..."
-        sleep 1.5
+        sleep 1
         break
     elif [ -e "$table_name" ]; then
         echo "There's a table with the same name. Please enter another name ❌."
     else
         while true; do
-            read -p "Enter the number of columns in this table: " num_columns
+            read -p "#-> Enter the number of columns in this table: " num_columns
 
             if [[ ! $num_columns =~ ^[1-9][0-9]*$ ]]; then
                 echo "Please enter a valid number of columns (greater than 0) ❌."
@@ -83,10 +70,10 @@ create_table() {
             fi
 
             while true; do
-                read -p "Enter the type for $column_name (string/integer): " column_type
+                read -p "#-> Enter the type for $column_name (str/int): " column_type
 
-                if [[ "$column_type" != "string" && "$column_type" != "integer" ]]; then
-                    echo "Please enter 'string' or 'integer' for the column type ❌."
+                if [[ "$column_type" != "str" && "$column_type" != "int" ]]; then
+                    echo "Please enter 'str' or 'int' for the column type ❌."
                     continue
                 else
                     break

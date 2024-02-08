@@ -6,7 +6,7 @@ function drop_table() {
     if [ -z "$tables" ]; then
         echo "===================================================="
         echo "No tables available to drop.Returning to Menu ❌."
-        sleep 1.5
+        sleep 1
         exit
 
     else
