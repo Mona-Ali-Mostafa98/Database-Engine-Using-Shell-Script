@@ -7,7 +7,7 @@ validate_name() {
 
     # Check if the entered name is empty or less than two characters
     if [[ -z "$entered_name" || ${#entered_name} -lt 2 ]]; then
-        echo "Error: Name must be at least two characters long."
+        echo "Error: Name must be at least two characters long ❌."
         return 1
     fi
 
@@ -15,10 +15,10 @@ validate_name() {
     if [[ "$entered_name" =~ ^[0-9] ]]; then
         # Check if the entered name contains only numbers
         if [[ "$entered_name" =~ ^[0-9]+$ ]]; then
-            echo "Error: Name cannot consist only of numbers."
+            echo "Error: Name cannot consist only of numbers ❌."
             return 1
         else
-            echo "Error: Name cannot start with a number."
+            echo "Error: Name cannot start with a number ❌."
             return 1
         fi
     fi
@@ -35,13 +35,13 @@ validate_name() {
 
     # Check if the entered name contains at least one lowercase letter
     if [[ "$entered_name" != *[[:lower:]]* ]]; then
-        echo "Error: Name must contain at least one lowercase letter."
+        echo "Error: Name must contain at least one lowercase letter ❌."
         return 1
     fi
 
     # Check if the entered name contains special characters
     if [[ ! "$entered_name" =~ ^[a-zA-Z0-9_]+$ ]]; then
-        echo "Error: Name can only contain alphanumeric characters and underscores."
+        echo "Error: Name can only contain alphanumeric characters and underscores ❌."
         return 1
     fi
 

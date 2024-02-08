@@ -16,10 +16,10 @@ function drop_database() {
                     if [ -d "$choice" ]; then
                         rm -r "$choice"
                         echo "===================================================="
-                        echo "Database with name '$choice' deleted successfully."
+                        echo "Database with name '$choice' deleted successfully ✅."
                     else
                         echo "===================================================="
-                        echo "Database with name '$choice' does not exist."
+                        echo "Database with name '$choice' does not exist ❌."
                     fi
                     break
                     ;;
@@ -30,12 +30,12 @@ function drop_database() {
                     ;;
                 *)
                     echo "===================================================="
-                    echo "Invalid input. Please enter 'yes' or 'no'."
+                    echo "Invalid input. Please enter 'yes' or 'no'❌."
                     ;;
             esac
         else
             echo "===================================================="
-            echo "Invalid choice. Please select a valid number of database."
+            echo "Invalid choice. Please select a valid number of database ❌."
         fi
     done
 }
@@ -49,7 +49,7 @@ function drop_database() {
 ## Check if the database directory exists
 #if [ -d "$database_name" ]; then
 #    rm -r "$database_name"
-#    echo "'$database_name' Database deleted Successfully."
+#    echo "'$database_name' Database deleted Successfully ✅."
 #else
 #    echo "'$database_name' does not exist, enter right database name."
 #fi

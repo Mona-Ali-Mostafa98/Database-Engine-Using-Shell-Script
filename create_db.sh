@@ -24,13 +24,13 @@ function create_database() {
         echo "Error: Database name is empty."
     elif [ -d "$database_name" ];then
         echo "===================================================="
-        echo " OPS !! the directory is already exist "
+        echo " OPS !! the directory is already exist ❌."
         #continue
     else
         # Create the directory with the validated name
         mkdir "$database_name"
         echo "===================================================="
-        echo "$database_name Created Successfully"
+        echo "$database_name Created Successfully ✅."
         #break
     fi
 }

@@ -14,12 +14,12 @@ database_dir="Databases"
 if [ -d "$database_dir" ]; then
     sudo chmod 777 "./$database_dir"
     cd "$database_dir" || exit 1
-    echo "Switched to Databases directory."
+    echo "Switched to Databases directory ✅."
 else
     sudo mkdir ./$database_dir
     sudo chmod 777 "./$database_dir"
     cd "$database_dir" || exit 1
-    echo "Switched to Databases directory."
+    echo "Switched to Databases directory ✅."
 fi
 
 while true;
@@ -58,7 +58,7 @@ do
             exit 0
             ;;
         *)
-            echo "Invalid choice. Please enter 1, 2, 3, or 4."
+            echo "❌ Invalid choice. Please enter 1, 2, 3, or 4 ❌."
             ;;
     esac
 done

@@ -10,16 +10,16 @@ connect_database() {
             if [ -d "$choice" ]; then
               echo "===================================================="
               cd "$choice"
-              echo "You are connected to database '$choice' successfully."
+              echo "You are connected to database '$choice' successfully ✅."
               menu_operations_on_table
               #handle_database_operations "$choice"
             else
                 echo "===================================================="
-                echo "Database with name '$choice' does not exist."
+                echo "Database with name '$choice' does not exist ❌."
             fi
         else
             echo "===================================================="
-            echo "Invalid choice. Please select a valid number of database."
+            echo "Invalid choice. Please select a valid number of database ❌."
         fi
     done
 }
@@ -73,7 +73,7 @@ menu_operations_on_table() {
           #update_table.sh
           ;;
       *)
-          echo "This option is not in the menu. Please try again."
+          echo "This option is not in the menu. Please try again ❌."
           ;;
   esac
   done
