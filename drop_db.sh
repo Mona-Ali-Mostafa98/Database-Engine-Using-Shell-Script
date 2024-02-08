@@ -25,7 +25,7 @@ function drop_database() {
                     ;;
                 no|n)
                     echo "===================================================="
-                    echo "Dropping database with name '$choice' canceled."
+                    echo "Dropping database with name '$choice' canceled ️⚠️."
                     break
                     ;;
                 *)
