@@ -1,5 +1,11 @@
 #!/usr/bin/bash
-source list_tables.sh
+source ./create_table.sh
+source ./list_tables.sh
+source ./drop_table.sh
+source ./insert_table.sh
+source ./select_table.sh
+source ./delete_table.sh
+source ./update_table.sh
 
 connect_database() {
     # List all databases and select one to connect
@@ -51,32 +57,25 @@ menu_operations_on_table() {
 
     case $choice in
       1)
-          echo "Creating table"
-          #source create_table.sh
-          echo "Test"
+          create_table
           ;;
       2)
           list_tables
           ;;
       3)
-          echo "Dropping table"
-          #source drop_table.sh
+          drop_table
           ;;
       4)
-          echo "Inserting in table"
-          #source insert_table.sh
+          insert_into_table
           ;;
       5)
-          echo "Selecting from table"
-          #select_table.sh
+          select_from_table
           ;;
       6)
-          echo "Deleting from table"
-          #delete_table.sh
+          delete_from_table
           ;;
       7)
-          echo "Updating from table"
-          #update_table.sh
+          update_table
           ;;
       8)
         read -p "Are you sure you want to exit from database and return to main menu '$choice'? (yes/no)" confirm

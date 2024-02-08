@@ -30,7 +30,7 @@ function create_database() {
         # Create the directory with the validated name
         mkdir "$database_name"
         echo "===================================================="
-        echo "$database_name Created Successfully ✅."
+        echo "Database '$database_name' Created Successfully ✅."
         #break
     fi
 }
