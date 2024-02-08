@@ -3,9 +3,9 @@ source ./create_table.sh
 source ./list_tables.sh
 source ./drop_table.sh
 source ./insert_table.sh
-source ./select_table.sh
+#source ./select_table.sh
 source ./delete_table.sh
-source ./update_table.sh
+#source ./update_table.sh
 
 connect_database() {
     # List all databases and select one to connect
