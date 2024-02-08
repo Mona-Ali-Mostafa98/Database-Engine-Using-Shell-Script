@@ -6,7 +6,7 @@ source ./connect_db.sh
 
 #************************start of menu************************
 echo "===================================================="
-echo "          Hello From my Database System        "
+echo "          ✅ Hello From my Database System ✅        "
 echo "===================================================="
 
 database_dir="Databases"
@@ -19,7 +19,7 @@ else
     sudo mkdir ./$database_dir
     sudo chmod 777 "./$database_dir"
     cd "$database_dir" || exit 1
-    echo "Switched to Databases directory ✅."
+    echo "Created databases directory and Switched to it ✅."
 fi
 
 while true;
@@ -36,24 +36,24 @@ do
     read -p "#-> Enter your choice: " choice
     case $choice in
         1)
-            echo "*******-> Creating database"
+            echo "--------># Creating database"
             create_database
             ;;
         2)
-            echo "*******-> Listing all databases"
+            echo "--------># Listing all databases"
             list_databases
             ;;
         3)
-            echo "*******-> Dropping database"
+            echo "--------># Dropping database"
             drop_database
             ;;
         4)
-            echo  "*******-> Connecting to a database"
+            echo  "--------># Connecting to a database"
             connect_database
             echo "===================================================="
             ;;
         5)
-            echo "*******-> Bye, Exiting program."
+            echo "--------># Bye, Exiting program."
             echo "===================================================="
             exit 0
             ;;
