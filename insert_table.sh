@@ -2,43 +2,36 @@
 
 function insert_into_table() {
   while true; do
-
+      # List available tables and prompt user for input
       echo "===================================================="
       echo "                   Available tables                 "
       echo "===================================================="
 
-      found_tables=false
+      tables=($(ls -p | grep -v / | tr / " "))
+      # Check if no tables exist
+      if [ -z "$tables" ]; then
+          echo "No tables available to drop. Returning to Menu...❌."
+      else
+          echo "#-> Select the number of the table you want to connect:"
+      fi
 
-      for table in *; do
-          if [ -f "$table" ]; then
-              echo "- $table"
-              found_tables=true
+      # Check if no tables exist
+      select table in "${tables[@]}" "exit"; do
+          if [ "$table" == "exit" ]; then
+              echo "Exiting the script..."
+              sleep 1
+              break 2
+          elif [[ ! -z "$table" && -e "$table" ]]; then #checks whether the variable $table is not empty and whether a file with the name stored in $table exists.
+              break
+          else
+              echo "Invalid choice. Please enter a valid number or 'exit' ❌."
           fi
       done
 
-      if [ "$found_tables" = false ]; then
-          echo "No tables available to insert data into, Returning to Menu...⚠️"
-          sleep 1
-          break
-      fi
-
-      read -p "#-> Enter the table name to insert into (enter 'exit' to quit): " insert_table_name
-
-      if [ "$insert_table_name" == "exit" ]; then
-          echo "Exiting the script..."
-          sleep 1
-          break
-      fi
-
-      if [ ! -e "$insert_table_name" ]; then
-          echo "Table $insert_table_name does not exist. Please enter a valid table name ❌."
-          continue
-      fi
-
       # Get column names, primary keys, and types from the file
-      IFS='|' read -r -a column_names < <(head -n 1 "$insert_table_name")
-      IFS='|' read -r -a column_keys < <(head -n 2 "$insert_table_name" | tail -n 1)
-      IFS='|' read -r -a column_types < <(head -n 3 "$insert_table_name" | tail -n 1)
+      IFS='|' read -r -a column_names < <(head -n 1 "$table")
+      IFS='|' read -r -a column_keys < <(head -n 2 "$table" | tail -n 1)
+      IFS='|' read -r -a column_types < <(head -n 3 "$table" | tail -n 1)
 
       # Find the index of the primary key column
       primary_key_index=-1
@@ -54,7 +47,7 @@ function insert_into_table() {
       while read -r line; do
           IFS='|' read -ra values <<< "$line"
           primary_key_values+=("${values[$primary_key_index]}")
-      done < <(tail -n +4 "$insert_table_name")
+      done < <(tail -n +4 "$table")
 
       # Prompt user for values
       values=()
@@ -71,21 +64,22 @@ function insert_into_table() {
                       fi
                       ;;
                   "str")
-                      if [[ "$value" =~ ^[a-zA-Z0-9_]+$ && ${#value} -ge 2 ]]; then
+                      if [[ "$value" =~ ^[a-zA-Z_]+$ && ${#value} -ge 2 ]]; then
                           break
                       else
                           if [ -z "$value" ]; then
                               echo "Invalid input. Please enter a non-empty string ❌."
+                          elif [[ "$value" =~ ^[0-9]+$ ]]; then
+                              echo "Invalid input. Numbers not accepted, Please enter a non-empty string ❌."
                           elif [ ${#value} -lt 2 ]; then
                               echo "Invalid input. Please enter a string with a minimum length of two characters ❌."
                           else
-                              echo "Invalid input. Please enter a string without special characters ❌."
+                              echo "Invalid input. Please enter a string without special characters or numbers ❌."
                           fi
                       fi
                       ;;
                   *)
                       echo "Unknown column type: ${column_types[i]} ❌."
-
                       ;;
               esac
           done
@@ -116,9 +110,10 @@ function insert_into_table() {
       done
 
       # Append values to the file
-      echo "${values[*]}" >> "$insert_table_name"
+      echo "${values[*]}" >> "$table"
 
-      echo "Data inserted successfully into table $insert_table_name ✅."
+      echo "===================================================="
+      echo "Data inserted successfully into table $table ✅."
       break
   done
 }

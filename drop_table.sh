@@ -14,30 +14,32 @@ function drop_table() {
 
         select table in "${tables[@]}";do
             if [ -n "$table" ]; then
-                read -p "Are you sure you want to drop '$table'? (yes/no)" confirm
+                while true; do
+                    read -p "Are you sure you want to drop '$table'? (yes(y) / no(n))?" confirm
 
-                case $confirm in
-                    yes|y)
-                        if [ -f "$table" ]; then
-                            rm "$table"
+                    case $confirm in
+                        yes|y)
+                            if [ -f "$table" ]; then
+                                rm "$table"
+                                echo "===================================================="
+                                echo "Table with name '$table' deleted successfully ✅."
+                            else
+                                echo "===================================================="
+                                echo "Table with name '$table' does not exist ❌."
+                            fi
+                            break
+                            ;;
+                        no|n)
                             echo "===================================================="
-                            echo "Table with name '$table' deleted successfully ✅."
-                        else
+                            echo "Dropping table with name '$table' canceled ⚠️."
+                            break
+                            ;;
+                        *)
                             echo "===================================================="
-                            echo "Table with name '$table' does not exist ❌."
-                        fi
-                        break
-                        ;;
-                    no|n)
-                        echo "===================================================="
-                        echo "Dropping table with name '$table' canceled ⚠️."
-                        break
-                        ;;
-                    *)
-                        echo "===================================================="
-                        echo "Invalid input. Please enter 'yes' or 'no'❌."
-                        ;;
-                esac
+                            echo "Invalid input. Please enter 'yes' or 'no'❌."
+                            ;;
+                    esac
+                done
             else
                 echo "===================================================="
                 echo "Invalid choice. Please select a valid number of table ❌."

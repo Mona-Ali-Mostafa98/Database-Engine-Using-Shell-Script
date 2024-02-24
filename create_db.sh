@@ -10,9 +10,6 @@ function create_database() {
         # Validate the entered name
         database_name=$(validate_name "$entered_name")
 
-#        if [[ $? -eq 0 ]]; then
-#            break  # Exit the loop if the entered name is valid
-#        fi
         if validate_name "$entered_name"; then
             break
         fi

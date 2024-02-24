@@ -25,7 +25,7 @@ fi
 while true;
 do
     echo "===================================================="
-    echo "                      Menu:                          "
+    echo "                     ✅ Menu ✅                          "
     echo "===================================================="
     echo "1. Create Database"
     echo "2. List Databases"

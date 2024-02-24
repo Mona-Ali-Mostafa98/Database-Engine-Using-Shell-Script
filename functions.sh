@@ -5,7 +5,7 @@
 validate_name() {
     local entered_name="$1"
 
-    # Check if the entered name is empty or less than two characters
+    # Check if the entered name is empty or less than two characters - #entered_name length of the entered_name
     if [[ -z "$entered_name" || ${#entered_name} -lt 2 ]]; then
         echo "Error: Name must be at least two characters long ❌."
         return 1

@@ -19,6 +19,7 @@ create_table() {
         sleep 1
         break
     elif [ -e "$table_name" ]; then
+        echo "===================================================="
         echo "There's a table with the same name. Please enter another name ❌."
     else
         while true; do
@@ -32,14 +33,23 @@ create_table() {
             fi
         done
 
+        #strings used to store names, types, and primary key indicators for each column, respectively.
         names=""
         types=""
         keys=""
-        primary_key_selected=false
 
         for ((i=1; i<=$num_columns; i++)); do
             while true; do
-                read -p "Please, Enter column $i name: " column_name
+                while true; do
+                    read -p "#-> Please, Enter column $i name: " entered_name
+
+                    column_name=$(validate_name "$entered_name")
+
+                    if validate_name "$entered_name"; then  #-n "$column_name"
+                        break
+                    fi
+                done
+
                 if [[ "$names" == *"$column_name"* ]]; then
                     echo "Column name must be unique. Please enter a different name ❌."
                     continue
@@ -48,25 +58,11 @@ create_table() {
                 fi
             done
 
-            while true; do
-                read -p "Is '$column_name' column a primary key? (yes/no): " column_is_primary_key
-
-                if [[ "$column_is_primary_key" != "yes" && "$column_is_primary_key" != "no" ]]; then
-                    echo "Please enter 'yes' or 'no' for the primary key."
-                    continue
-                else
-                    break
-                fi
-            done
-
-            if [ "$column_is_primary_key" == "yes" ]; then
-                if [ "$primary_key_selected" == true ]; then
-                    echo "Only one primary key allowed."
-                    ((i--)) # Decrease the loop counter to prompt for the same column again
-                    continue
-                else
-                    primary_key_selected=true
-                fi
+            if [ $i -eq 1 ]; then
+                column_is_primary_key="yes"
+                echo "#--> By Default Column # 1 is defined as a primary key ✅."
+            else
+                column_is_primary_key="no"
             fi
 
             while true; do
@@ -91,16 +87,11 @@ create_table() {
             fi
         done
 
-        if [ "$primary_key_selected" == false ]; then
-            echo "At least one primary key is required. Please define a column as a primary key ❌."
-            continue
-        fi
-
         echo "$names" >> "$table_name"
         echo "$keys" >> "$table_name"
         echo "$types" >> "$table_name"
 
+        echo "===================================================="
         echo "Table with name '$table_name' created successfully ✅."
-        break
     fi
 }

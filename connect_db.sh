@@ -21,7 +21,7 @@ connect_database() {
           if [ -d "$choice" ]; then
             echo "===================================================="
             cd "$choice"
-            pwd
+#            pwd
             echo "You are connected to database '$choice' successfully ✅."
             menu_operations_on_table
             #handle_database_operations "$choice"
