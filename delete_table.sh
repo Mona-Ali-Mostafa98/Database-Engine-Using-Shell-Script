@@ -8,7 +8,7 @@ function delete_from_table() {
     else
         echo "#-> Select the number of the table you want to drop: "
 
-        select table in "${tables[@]}" "exit"; do
+        select table in "${tables[@]}" "exit"; do #expands to all elements in the array (tables).
             if [ "$table" == "exit" ]; then
                 echo "Exiting the script..."
                 sleep 1
@@ -22,7 +22,7 @@ function delete_from_table() {
                     else
                         # Prompt user for deletion choice
                         # PS3="Select an choice #->"
-                        select choice in "Delete Specified Row From Table" "Delete All Rows From Table"; do
+                        select choice in "Delete Specified Row From Table" "Delete All Rows From Table" "Exit"; do
                             case $choice in
                                 "Delete Specified Row From Table")
                                     echo "===================================================="
@@ -96,6 +96,15 @@ function delete_from_table() {
                                             ;;
                                     esac
                                     break
+                                    ;;
+                                "Exit")
+                                    echo "===================================================="
+                                    echo "Exiting ⚠️."
+                                    break 2
+                                    ;;
+                                *)
+                                    echo "===================================================="
+                                    echo "Invalid choice. Please select a valid option ❌."
                                     ;;
                             esac
                         done

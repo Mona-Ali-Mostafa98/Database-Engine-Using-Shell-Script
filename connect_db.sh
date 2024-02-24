@@ -15,7 +15,7 @@ connect_database() {
       echo "No DataBases Existing Now ❌! "
     else
       echo "#-> Select the number of the database you want to connect:"
-      select choice in "${databases[@]}";
+      select choice in "${databases[@]}"; #expands to all elements in the array (databases).
       do
         if [ -n "$choice" ]; then
           if [ -d "$choice" ]; then

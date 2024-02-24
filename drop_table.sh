@@ -12,7 +12,7 @@ function drop_table() {
     else
         echo "#-> Select the number of the table you want to connect:"
 
-        select table in "${tables[@]}";do
+        select table in "${tables[@]}";do #expands to all elements in the array (tables).
             if [ -n "$table" ]; then
                 while true; do
                     read -p "Are you sure you want to drop '$table'? (yes(y) / no(n))?" confirm

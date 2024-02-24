@@ -2,7 +2,7 @@
 function select_from_table() {
     while true; do
         echo "===================================================="
-        echo "                Available tables                    "
+        echo "                ✅Available tables ✅                   "
         echo "===================================================="
 
         tables=($(ls -p | grep -v / | tr / " "))
@@ -16,7 +16,7 @@ function select_from_table() {
         fi
 
         # Check if no tables exist
-        select table in "${tables[@]}" "exit"; do
+        select table in "${tables[@]}" "exit"; do #expands to all elements in the array (tables).
             if [ "$table" == "exit" ]; then
                 echo "Exiting the script..."
                 sleep 1
@@ -32,15 +32,9 @@ function select_from_table() {
         IFS='|' read -r -a column_keys < <(head -n 2 "$table" | tail -n 1)
         IFS='|' read -r -a column_types < <(head -n 3 "$table" | tail -n 1)
 
-#        select_all
-#
-#        select_by_primary_key
-#
-#        select_by_column
+        options=("Select All Rows" "Select Row by Primary Key" "Select by Column" "Exit")
 
-        options=("Select All Rows" "Select Row by Primary Key" "Select by Column" "Quit")
-
-        select choice in "${options[@]}"; do
+        select choice in "${options[@]}"; do  #expands to all elements in the array (options).
             case $choice in
                 "Select All Rows")
                     select_all
@@ -54,12 +48,14 @@ function select_from_table() {
                     select_by_column
                     break
                     ;;
-                "Quit")
-                    echo "Quitting..."
+                "Exit")
+                    echo "===================================================="
+                    echo "Exiting ⚠️."
                     break 2
                     ;;
                 *)
-                    echo "Invalid option"
+                    echo "===================================================="
+                    echo "Invalid choice. Please select a valid option ❌."
                     ;;
             esac
         done
@@ -68,7 +64,7 @@ function select_from_table() {
 select_all() {
     echo "Executing: SELECT * FROM $table;"
     echo "===================================================="
-    echo "Columns: ${column_names[@]}"
+    echo "Columns: ${column_names[@]}"  #expands to all elements in the array (column_names).
     echo "===================================================="
 
     awk -F'|' '
@@ -96,20 +92,20 @@ select_by_column() {
     read -p "#-> Enter the column names (comma-separated): " column_names_input
     IFS=',' read -r -a selected_columns <<< "$column_names_input"
 
-    for col in "${selected_columns[@]}"; do
+    for col in "${selected_columns[@]}"; do #expands to all elements in the array.
         if ! awk -v col="$col" 'NR==1 {gsub(/\|/, " "); for (i=1; i<=NF; i++) if ($i == col) exit 0; exit 1}' "$table"; then
             echo "Column '$col' does not exist. Please enter valid column names ❌."
             return
         fi
     done
 
-    for col in "${selected_columns[@]}"; do
+    for col in "${selected_columns[@]}"; do #expands to all elements in the array.
         printf "%s|" "$col"
     done
     echo ""
 
     indices=()
-    for col in "${selected_columns[@]}"; do
+    for col in "${selected_columns[@]}"; do #expands to all elements in the array.
         indices+=( $(awk -F'|' -v col="$col" 'NR==1 {for (i=1; i<=NF; i++) if ($i == col) print i}' "$table") )
     done
 
@@ -137,7 +133,7 @@ select_by_primary_key() {
     read -p "#-> Enter the primary key value: " primary_key
     echo "Executing: SELECT * FROM $table WHERE ${column_names[$((primary_key_column_index-1))]} = $primary_key;"
     echo "===================================================="
-    echo "Columns: ${column_names[@]}"
+    echo "Columns: ${column_names[@]}" #expands to all elements in the array.
     echo "===================================================="
 
     awk -F'|' -v val="$primary_key" -v key_col="$primary_key_column_index" -v OFS=' | ' '

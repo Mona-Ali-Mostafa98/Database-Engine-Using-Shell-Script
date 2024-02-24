@@ -80,14 +80,14 @@ create_table() {
             types+="$column_type"
             keys+="$column_is_primary_key"
 
-            if [ $i -lt $num_columns ]; then
+            if [ $i -lt $num_columns ]; then  # not the last column
                 names+="|"
                 types+="|"
                 keys+="|"
             fi
         done
 
-        echo "$names" >> "$table_name"
+        echo "$names" >> "$table_name" # printed content (echo "$names") to the file $table_name.
         echo "$keys" >> "$table_name"
         echo "$types" >> "$table_name"
 

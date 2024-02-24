@@ -7,7 +7,7 @@ function drop_database() {
     while true; do
         echo "#-> Select the number of the database you want to drop: "
 
-        select database in "${databases[@]}";
+        select database in "${databases[@]}";  #expands to all elements in the array (databases).
         do
             if [ -n "$database" ]; then
                 while true; do

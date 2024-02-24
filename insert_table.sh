@@ -4,7 +4,7 @@ function insert_into_table() {
   while true; do
       # List available tables and prompt user for input
       echo "===================================================="
-      echo "                   Available tables                 "
+      echo "                   ✅Available tables ✅                "
       echo "===================================================="
 
       tables=($(ls -p | grep -v / | tr / " "))
@@ -16,7 +16,7 @@ function insert_into_table() {
       fi
 
       # Check if no tables exist
-      select table in "${tables[@]}" "exit"; do
+      select table in "${tables[@]}" "exit"; do #expands to all elements in the array (tables).
           if [ "$table" == "exit" ]; then
               echo "Exiting the script..."
               sleep 1
@@ -35,7 +35,7 @@ function insert_into_table() {
 
       # Find the index of the primary key column
       primary_key_index=-1
-      for ((i=0; i<${#column_keys[@]}; i++)); do
+      for ((i=0; i<${#column_keys[@]}; i++)); do #expands to all elements in the array (column_keys).
           if [ "${column_keys[i]}" == "yes" ]; then
               primary_key_index=$i
               break
@@ -51,7 +51,7 @@ function insert_into_table() {
 
       # Prompt user for values
       values=()
-      for ((i=0; i<${#column_names[@]}; i++)); do
+      for ((i=0; i<${#column_names[@]}; i++)); do #expands to all elements in the array (column_keys).
           while true; do
               read -p "#-> Enter value for ${column_names[i]} (${column_types[i]}): " value
 

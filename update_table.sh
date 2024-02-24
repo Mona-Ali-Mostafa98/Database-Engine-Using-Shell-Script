@@ -4,7 +4,7 @@ function update_table() {
    while true; do
        # List available tables and prompt user for input
        echo "===================================================="
-       echo "                   Available tables                 "
+       echo "                   ✅Available tables ✅                "
        echo "===================================================="
 
        tables=($(ls -p | grep -v / | tr / " "))
@@ -18,7 +18,7 @@ function update_table() {
        fi
 
        # Check if no tables exist
-       select table in "${tables[@]}" "exit"; do
+       select table in "${tables[@]}" "exit"; do #expands to all elements in the array.
            if [ "$table" == "exit" ]; then
                echo "Exiting the script..."
                sleep 1
@@ -36,7 +36,7 @@ function update_table() {
 
 
        primary_key_index=-1
-       for ((i=0; i<${#column_keys[@]}; i++)); do
+       for ((i=0; i<${#column_keys[@]}; i++)); do #expands to all elements in the array.
            if [ "${column_keys[i]}" == "yes" ]; then
                primary_key_index=$i
                break
@@ -51,7 +51,7 @@ function update_table() {
        done < <(tail -n +4 "$table")
 
 
-       if [ ${#primary_key_values[@]} -eq 0 ]; then
+       if [ ${#primary_key_values[@]} -eq 0 ]; then #expands to all elements in the array.
            echo "File $table is empty."
            continue
        fi
